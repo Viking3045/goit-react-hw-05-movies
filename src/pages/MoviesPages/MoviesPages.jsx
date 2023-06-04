@@ -1,7 +1,8 @@
 // import {MovieDetailsPages} from '../MovieDetailsPages/MovieDetailsPages'
 import { Movies } from "components/Movies/Movies"
-export const MoviesPages = () => {
+ const MoviesPages = () => {
     return (
        < Movies/>
     )
 }
+export default MoviesPages

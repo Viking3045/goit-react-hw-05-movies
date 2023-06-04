@@ -1,40 +1,43 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams, useLocation } from 'react-router-dom';
 export const Movies = () => {
-    const [input, setInput] = useState('');
-    const [inputValue, setInputValue] = useState('');
+    // const [input, setInput] = useState('');
+    const [searchParams, setSearchParams] = useSearchParams();
     const [searchVideos, setSearchVideos]= useState([])
-    //  const [inputValue, setInputValue] = useState('');
+  // const [inputValue, setInputValue] = useState('');
+    const location = useLocation();
+  const searchQuery = searchParams.get('query');
+   const [query, setQuery] = useState(() => searchQuery || '');
+  // console.log(query)
     
-  const handleChange = e => {
-    setInput(`${e.target.value}`);
-    };
+  // const handleChange = e => {
+  //   setInput(`${e.target.value}`);
+  //   };
     
 
-  const search = e => {
-    if (input.trim() === '') {
-      alert('Please enter something');
-      return;
-    }
-    e.preventDefault();
-
-    setInputValue(input)
-    setInput('');
+  // const search = e => {
+  //   if (query === "") return;
+  //   // if (input.trim() === '') {
+  //   //   alert('Please enter something');
+  //   //   return;
+  //   // }
+  //   e.preventDefault();
+  //    const form = e.currentTarget;
+  //   setSearchParams({ query: form.elements.query.value });
+  //   form.reset();
+  //   // setInputValue(input)
+  //   // setSearchParams({ query: input })
+  //   // setInput('');
       
-  };
-    
-    
-    // console.log(inputValue)
-    
-    
+  // };
   useEffect(() => {
     const fetch = require('node-fetch');
 
       const url =
-          `https://api.themoviedb.org/3/search/movie?query=${inputValue}&include_adult=false&language=en-US&page=1`;
+          `https://api.themoviedb.org/3/search/movie?query=${searchQuery}&include_adult=false&language=en-US&page=1`;
     const options = {
         method: 'GET',
-        query: `${inputValue}`,
+        // query: `${inputValue}`,
       headers: {
         accept: 'application/json',
         Authorization:
@@ -42,36 +45,47 @@ export const Movies = () => {
       },
       //   query: `${input}`,
     };
-
-    fetch(url, options)
+     
+    searchQuery && fetch(url, options)
       .then(res => res.json())
       .then(json => {
         // console.log(json)
     setSearchVideos(json.results)
     })
       .catch(err => console.error('error:' + err));
-  }, [inputValue]);
+  }, [searchQuery]);
 
+  const handleChange = e => {
+    setQuery(e.target.value);
+  };
+   const handleSubmit = e => {
+     e.preventDefault();
+    setSearchParams({ query: query });
+  };
+// const updateQueryString = (query) => {
+//     const nextParams = query !== "" ? { query } : {};
+//     setSearchParams(nextParams);
+//   };
   return (
     <>
-      <form onSubmit={search} action="">
+      <form onSubmit={handleSubmit}>
         <input
           name="input"
           type="text"
           autoComplete="off"
-          onChange={handleChange}
-          value={input}
+           onChange={handleChange}
+           value={query}
           autoFocus
           placeholder="Search videos"
         />
         <button type="submit">Search</button>
           </form>
            <ul>
- {
-                searchVideos.map(({ title,id}) => (
-                    <li key={id}><Link  to={`/movies/:${id}`}>{ title}</Link></li>
+                  {
+                searchVideos.length>0 &&(searchVideos.map(({ title,id}) => (
+                  <li key={id}><Link to={`/movies/${id}`} state={{ from: location }}>{ title}</Link></li>
                 ))
-            }
+            )}
         </ul>
       {/* <MovieDetailsPages/> */}
     </>

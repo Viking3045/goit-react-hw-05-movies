@@ -1,5 +1,8 @@
-export const RewiewsPages = () => {
+import { Reviews } from "components/Reviews/Reviews"
+ const ReviewsPages = () => {
     return (
-      <p>author:</p>
+     <Reviews/>
     )    
 }
+
+export default ReviewsPages

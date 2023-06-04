@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
-import { Link, Outlet } from 'react-router-dom';
-import { useParams } from 'react-router-dom';
+import { Link, Outlet, useLocation, useParams } from 'react-router-dom';
 // import { cast } from "components/Cast/Cast";
 
 export const MovieDetails = () => {
   const [moreDetails, setMoreDetails] = useState({});
 
   const { movieId } = useParams();
-  // console.log(movieId)
+   const location = useLocation();
+  const backLinkHref = location.state?.from ?? "/";
+  console.log(moreDetails)
   useEffect(() => {
     const fetch = require('node-fetch');
 
@@ -30,10 +31,14 @@ export const MovieDetails = () => {
   }, [movieId]);
 
   // console.log(moreDetails.poster_path);
+   const getYear = releaseDate => {
+    const date = new Date(releaseDate);
+    return date.getFullYear();
+  };
   return (
     <>
       <Link
-        to="/"
+        to={backLinkHref}
         style={{
           margin: 8,
           padding: '12px 16px',
@@ -45,12 +50,11 @@ export const MovieDetails = () => {
       >
         Go back
       </Link>
-      <img src={moreDetails.poster_path} alt="" />
-      <h2>{moreDetails.title}</h2>
-      <p>userScore:{moreDetails.popularity}%</p>
+      <img src={`https://image.tmdb.org/t/p/w500${moreDetails.poster_path}`} alt="phot" />
+      <h2>{moreDetails.title} ({getYear(moreDetails.release_date)})</h2>
+      <p>userScore:{~~(moreDetails.vote_average*10)}%</p>
       <h2>Owerwiews</h2>
       <p>{moreDetails.overview}</p>
-      <p>Genres</p>
       <h3>Additional information</h3>
       <ul>
         <li>

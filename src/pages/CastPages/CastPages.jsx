@@ -1,6 +1,7 @@
 import { Cast } from "components/Cast/Cast"
-export const CastPages = () => {
+ const CastPages = () => {
     return (
       <Cast/>
     )
 }
+export default CastPages

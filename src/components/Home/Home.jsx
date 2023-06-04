@@ -1,9 +1,10 @@
-import { Link} from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useState, useEffect } from 'react';
 // import { json } from 'react-router-dom';
 
 // import { MovieDetails } from 'components/MovieDetails/MovieDetails'
 export const Home = () => {
+  const location = useLocation();
     const [videos, setVideos] = useState([]);
     useEffect(() => {
 const fetch = require('node-fetch');
@@ -32,7 +33,7 @@ fetch(url, options)
         <><ul>
  {
                 videos.map(({ title,id}) => (
-                  <li key={id}><Link to={`/movies/${id}`}>{title}</Link></li>
+                  <li key={id}><Link to={`/movies/${id}`} state={{ from: location }}>{title}</Link></li>
                   
                 ))
             }

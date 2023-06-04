@@ -1,8 +1,9 @@
 import { Home } from "components/Home/Home"
-export const HomePages = () => {
+ const HomePages = () => {
     return (
         <>
            <Home/>
             </>
     )
 }
+export default HomePages

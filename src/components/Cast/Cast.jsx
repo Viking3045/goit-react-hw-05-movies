@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 export const Cast = () => {
-  const [cast, setCast] = useState({});
+  const [cast, setCast] = useState([]);
   const { movieId } = useParams();
   // console.log(movieId)
 
@@ -22,20 +22,22 @@ export const Cast = () => {
     fetch(url, options)
       .then(res => res.json())
       .then(json => {
-        setCast(json.crew);
+        setCast(json.cast)
+            // console.log(json);
       })
       .catch(err => console.error('error:' + err));
   }, [movieId]);
-  console.log(cast);
+  // console.log(cast);
   return (
-    <>
-      {cast.map(({name}) => (
-        <>
-          <img src="" alt="" />
+    <ul>
+      {cast.map(({name,character, profile_path, id}) => (
+        <li key={id}>
+            <img  src={`https://image.tmdb.org/t/p/w92${profile_path}`} alt="phot" />
           <p>{name}</p>
-          <p>Role</p>
-        </>
+          <p>Character:  {character }</p>
+        </li>
        ))} 
-    </>
+    </ul>
+   
   );
 };
