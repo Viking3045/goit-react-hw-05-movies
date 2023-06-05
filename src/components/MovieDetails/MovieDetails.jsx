@@ -6,8 +6,9 @@ export const MovieDetails = () => {
   const [moreDetails, setMoreDetails] = useState({});
 
   const { movieId } = useParams();
-   const location = useLocation();
-  const backLinkHref = location.state?.from ?? "/";
+  const location = useLocation();
+  console.log(`location: ${location}`)
+  const backLinkHref = location.state?.from;
   console.log(moreDetails)
   useEffect(() => {
     const fetch = require('node-fetch');
@@ -58,10 +59,10 @@ export const MovieDetails = () => {
       <h3>Additional information</h3>
       <ul>
         <li>
-          <Link to="cast">Cast</Link>
+          <Link to="cast" state={{ from: backLinkHref }}>Cast</Link>
         </li>
         <li>
-          <Link to="reviews">Reviews</Link>
+          <Link to="reviews" state={{ from: backLinkHref }}>Reviews</Link>
         </li>
       </ul>
       <Outlet />
